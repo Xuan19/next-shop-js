@@ -2,6 +2,8 @@ import Image from 'next/image';
 import Page from '../../components/Page';
 import { ApiError } from '../../lib/api';
 import { getProduct, getProducts } from '../../lib/products';
+import AddToCardWidget from '../../components/AddToCardWidget';
+import {useUser} from '../../hooks/user'
 
 export async function getStaticPaths() {
   const products = await getProducts();
@@ -29,7 +31,8 @@ export async function getStaticProps({ params: { id } }) {
 }
 
 function ProductPage({ product }) {
-  console.log('[ProductPage] render:', product);
+  const user = useUser()
+  // console.log('[ProductPage] render:', product);
   return (
     <Page title={product.title}>
       <div className="flex flex-col lg:flex-row">
@@ -46,6 +49,7 @@ function ProductPage({ product }) {
             {product.price}
           </p>
         </div>
+        {user&&<AddToCardWidget productID={product.id}/>}
       </div>
     </Page>
   );
